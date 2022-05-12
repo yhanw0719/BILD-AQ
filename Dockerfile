@@ -7,7 +7,7 @@
 
 FROM debian:bullseye
 
-MAINTAINER TBD 
+MAINTAINER Yuhan Wang
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TERM=dumb
 ARG TZ=PST8PDT
@@ -171,28 +171,28 @@ RUN echo ''  ;\
     echo ""
 
 
-#### BILD-AQ customization here
-RUN echo ''  ;\
-    echo '==================================================================' ;\
-    echo '' ;\
-    export TERM=dumb  ;\
-    cd /     ;\
-    mkdir -p /opt/gitrepo/BILD-AQ ;\
-    # tmp for test with Ling's tmp code
-    mkdir -p /global/data/transportation/ATLAS/static/urbansim ;\
-    mkdir -p /global/data/transportation/ATLAS/static/urbansim/model_application ;\
-    pwd      ;\
-    echo ""
+# #### BILD-AQ customization here
+# RUN echo ''  ;\
+#     echo '==================================================================' ;\
+#     echo '' ;\
+#     export TERM=dumb  ;\
+#     cd /     ;\
+#     mkdir -p /opt/gitrepo/BILD-AQ ;\
+#     # tmp for test with Ling's tmp code
+#     mkdir -p /global/data/transportation/ATLAS/static/urbansim ;\
+#     mkdir -p /global/data/transportation/ATLAS/static/urbansim/model_application ;\
+#     pwd      ;\
+#     echo ""
 
-# add some marker of how Docker was build.
-##COPY Dockerfile* /opt/gitrepo/container/
-##COPY . /
-COPY . /opt/gitrepo/BILD-AQ
+# # add some marker of how Docker was build.
+# ##COPY Dockerfile* /opt/gitrepo/container/
+# ##COPY . /
+# COPY . /opt/gitrepo/BILD-AQ
 
-RUN  cd / \
-  && touch _TOP_DIR_OF_CONTAINER_  \
-  && echo  "--------" >> _TOP_DIR_OF_CONTAINER_   \
-  && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  
+# RUN  cd / \
+#   && touch _TOP_DIR_OF_CONTAINER_  \
+#   && echo  "--------" >> _TOP_DIR_OF_CONTAINER_   \
+#   && TZ=PST8PDT date  >> _TOP_DIR_OF_CONTAINER_  
 
 
 ENV TZ America/Los_Angeles
