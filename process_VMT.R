@@ -14,6 +14,7 @@ library(dplyr) # 1.0.7
 #####################################################
 ## load lanemiles by isrm and tract
 load(file=file.path(inputdir,paste0('network_isrm_',rgn,'.RData')))
+network_isrm = network_isrm[,c('GEOID','isrm','lanemiles')]
 
 ## read tract VMT input
 vmt <- read.csv(file.path(inputdir,paste0('Sample_Input_',rgn,'.csv')))
