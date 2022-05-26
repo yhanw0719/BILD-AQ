@@ -13,7 +13,7 @@ library(dplyr)
 ##############################################
 # set up
 ##############################################
-setwd('G:/Shared drives/CMAQ_Adjoint/Yuhan/Fall_2021/Task5_InMAP/BILD-AQ/')
+# setwd('G:/Shared drives/CMAQ_Adjoint/Yuhan/Fall_2021/Task5_InMAP/BILD-AQ/')
 
 ## set input and output paths
 inputdir = './input'
