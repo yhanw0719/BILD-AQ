@@ -53,6 +53,6 @@ ENV R_LIBS=/usr/local/lib/R/site-library:/usr/lib/R/site-library:/usr/lib/R/libr
 
 #ENTRYPOINT [ "/bin/bash" ]
 #ENTRYPOINT [ "/usr/bin/R" ]
-#ENTRYPOINT [ "Rscript", "/opt/gitrepo/BILD-AQ/main.R" ]
-ENTRYPOINT [ "Rscript", "/opt/gitrepo/BILD-AQ/test.R" ]
+ENTRYPOINT [ "Rscript", "/opt/gitrepo/BILD-AQ/main.R" ]
+#ENTRYPOINT [ "Rscript", "/opt/gitrepo/BILD-AQ/test.R" ]
 
