@@ -16,8 +16,8 @@ library(dplyr)
 # setwd('G:/Shared drives/CMAQ_Adjoint/Yuhan/Fall_2021/Task5_InMAP/BILD-AQ/')
 
 ## set input and output paths
-inputdir = './input'
-outputdir = './output'
+inputdir = '/input'
+outputdir = '/output'
 
 ## set emission category and region of interest
 category = "Gas LD Veh."
@@ -51,7 +51,7 @@ if (!is.na(vmt_input_fname)) {
   ##   -> var network_isrm, cols c("lanemiles",'isrm','GEOID')
   ##   2) Sample_Input_{$rgn}.csv
   ##   -> cols c("tract_geoid",'VMT_base','VMT_scenario')
-  source('process_VMT.R')
+  source('/opt/gitrepo/BILD-AQ/process_VMT.R')
   vmt = read.csv(file.path(inputdir,paste0('Sample_Input_ISRM_',rgn,'.csv')))
 
 }
@@ -87,7 +87,7 @@ if (!is.na(em_input_fname)){
   } else {
     
   ## if not processed, call preprocessor
-    source('process_emission.R')
+    source('/opt/gitrepo/BILD-AQ/process_emission.R')
     em = read.csv(file.path(inputdir,paste0('nei_isrm_summary_',category,'.csv')))
     
   }
@@ -155,7 +155,7 @@ out = merge(vmt, em, by='isrm', all=FALSE) %>%
 ##############################################
 # format, check and output
 ##############################################
-## extrat useful columns only
+## extract useful columns only
 out = out[,c('sector','isrm','VOC','VOC_scenario','NOx','NOx_scenario',
              'NH3','NH3_scenario','SOx','SOx_scenario','PM25','PM25_scenario')]
 
