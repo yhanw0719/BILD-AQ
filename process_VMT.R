@@ -1,7 +1,7 @@
 #!/usr/bin/Rscript
 
 ## R version 4.1.1
-library(sf) # 1.0-2
+#library(sf) # 1.0-2
 ## libLinking to GEOS 3.9.0, GDAL 3.2.2, PROJ 7.2.1
 ## rgdal 1.5-25, rgeos 0.5-8, gprojroot 2.0.2
 library(dplyr) # 1.0.7
