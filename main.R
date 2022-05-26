@@ -3,7 +3,7 @@ rm(list=ls())
 
 ## R version 4.1.1
 # install.packages(c('sf','geojsonsf'))
-library(sf)
+#library(sf)
 library(geojsonsf)
 library(dplyr)
 
