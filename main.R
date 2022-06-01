@@ -2,8 +2,8 @@
 rm(list=ls())
 
 ## R version 4.1.1
-install.packages('sf')
-library(sf)
+# install.packages('sf')
+# library(sf)
 library(dplyr)
 library(stringr)
 
