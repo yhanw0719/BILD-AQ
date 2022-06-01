@@ -2,12 +2,75 @@
 rm(list=ls())
 
 ## R version 4.1.1
-# install.packages(c('sf','geojsonsf'))
-#library(sf)
-library(geojsonsf)
+install.packages('sf')
+library(sf)
 library(dplyr)
+library(stringr)
 
 
+
+# useparser = T  # use cmd argument parsing
+# 
+# if(useparser){  
+#   suppressPackageStartupMessages(library("optparse"))
+#   
+#   option_list <- list( 
+#     make_option(c("--indir"),  dest="inputdirPath",  action="store", help="path to input  data", default="/atlas_input" ),
+#     make_option(c("--outdir"), dest="outputdirPath", action="store", help="path to output data", default="/atlas_output" ),
+#     make_option(c("--basedir"), dest="basedirPath", action="store", help="dir where pilates/orchestrator is located", default="/" ),
+#     make_option(c("--codedir"), dest="codedirPath", action="store", help="base dir where R code is located", default="/" ),
+#     make_option(c("--outyear"), dest="outputyear", action="store", help="output year", default="2017" ),
+#     make_option(c("--freq"), dest="freq", action="store", help="simulation interval", default="1" ),
+#     make_option(c("--nsample"), dest="nsample", action="store", help="subsample of hh to process, 0 if all hh", default= "0" ),
+#     make_option(c("--npe"), dest="npe", action="store", help="number of cores for parallel computing", default="9" ) # number of cores to use in parallel run
+#     
+#     
+#   )
+#   # input year is previous year in urbansim output, output year is the current year in urbansim output
+#   # note, static model directly predicts output year without relying on previous year (i.e. inputyear)
+#   
+#   opt <- parse_args(OptionParser(option_list=option_list))
+#   
+#   showDebug = 1
+#   if( showDebug ) {
+#     print( "Hello World from R! (rel:2022.0118.2125)" )
+#     print( "** input  directory specified as, and content:") 
+#     print( opt$inputdirPath )
+#     print( list.files( opt$inputdirPath, recursive=TRUE ) )
+#     print( "** output directory specified as, and content:")
+#     print( opt$outputdirPath )
+#     print( list.files( opt$outputdirPath, recursive=TRUE ) )
+#     print( "** codedir  directory specified as:") 
+#     print( opt$codedirPath )
+#     print( "** basedir  directory specified as:") 
+#     print( opt$basedirPath )
+#     print( "** outputyear, freq specified as:") 
+#     print( opt$outputyear )
+#     print( opt$freq )
+#     print( "** number of clusters for parallel computing")
+#     
+#     print( "sample of households to process")
+#     if(opt$nsample == 0){ print('full sample')}else{print(opt$nsample)}
+#   }
+#   
+#   # read out the global variables so that subsequent programs can all use them
+#   
+#   basedir = opt$basedirPath
+#   codedir = opt$codedirPath
+#   inputdir = opt$inputdirPath  # the mounting point
+#   outputdir = opt$outputdirPath # the mounting point
+#   outputyear    = strtoi(opt$outputyear, base=10)
+#   #  inputyear = outputyear - freq  # this variable will be used for next version of atlas
+#   #  freq  = strtoi(opt$freq, base=10) # this variable will be used for next version of atlas
+#   nsample = strtoi(opt$nsample, base=10) # number of households to subsample
+#   Npe = strtoi(opt$npe, base=10) # number of processors to use
+#   
+#   print( "basedir and codedir parsed as:") 
+#   print( basedir )
+#   print( codedir )
+#   
+# }
+# 
 
 
 ##############################################
@@ -16,8 +79,8 @@ library(dplyr)
 # setwd('G:/Shared drives/CMAQ_Adjoint/Yuhan/Fall_2021/Task5_InMAP/BILD-AQ/')
 
 ## set input and output paths
-inputdir = '/input'
-outputdir = '/output'
+inputdir = './input'
+outputdir = './output'
 
 ## set emission category and region of interest
 category = "Gas LD Veh."
@@ -30,6 +93,10 @@ em_input_fname = NA
 
 ## set output fname if needed, otherwise "Sample_Output_ISRM_{$rgn}_{$category}.csv"
 output_fname = NA
+
+## PM change % = PM25factor * VMT change %
+## range = [0,1]
+PM25factor = 0
 
 
 ##############################################
@@ -143,31 +210,33 @@ if (!all(c('isrm','VOC','NOx','NH3','SOx','PM25') %in% colnames(em))){
 ##############################################
 # main calcualtion
 ##############################################
-out = merge(vmt, em, by='isrm', all=FALSE) %>%
-      mutate(VOC_scenario = VOC / VMT_base * VMT_scenario,
-             NOx_scenario = NOx / VMT_base * VMT_scenario,
-             NH3_scenario = NH3 / VMT_base * VMT_scenario,
-             SOx_scenario = SOx / VMT_base * VMT_scenario,
-             PM25_scenario = PM25 / VMT_base * VMT_scenario)
+out = merge(vmt, em, by='isrm', all=FALSE)  %>%
+      mutate(VOC = VOC / VMT_base * VMT_scenario - VOC,
+             NOx = NOx / VMT_base * VMT_scenario - NOx,
+             NH3 = NH3 / VMT_base * VMT_scenario - NH3,
+             SOx = SOx / VMT_base * VMT_scenario - SOx,
+             PM25 = (PM25 / VMT_base * VMT_scenario - PM25)*PM25factor)
 
 
 
 ##############################################
 # format, check and output
 ##############################################
-## extract useful columns only
-out = out[,c('sector','isrm','VOC','VOC_scenario','NOx','NOx_scenario',
-             'NH3','NH3_scenario','SOx','SOx_scenario','PM25','PM25_scenario')]
+## print stats
+print(paste0('Input VMT_base sum: ', formatC(sum(vmt$VMT_base), format = "e", digits = 2)))
+print(paste0('Output VMT_base sum: ', formatC(sum(out$VMT_base), format = "e", digits = 2)))
+print(paste0('Input VMT_scenario sum: ', formatC(sum(vmt$VMT_scenario), format = "e", digits = 2)))
+print(paste0('Output VMT_scenario dum: ', formatC(sum(out$VMT_scenario), format = "e", digits = 2)))
+
+## extrat useful columns only
+out = out[,c('isrm','VOC','NOx','NH3','SOx','PM25',
+             'Height','Diam','Temp','Velocity','STATEFP','x','y')]
 
 ## check output
 if (any(is.na(out))){
   print(paste0('WARNING: Output has NA values - ', sum(apply(out, 1, anyNA)),' rows dropped'))
   out = drop_na(out)
 }
-print(paste0('Input VMT_base sum: ', formatC(sum(vmt$VMT_base), format = "e", digits = 2)))
-print(paste0('Output VMT_base dum: ', formatC(sum(out$VMT_base), format = "e", digits = 2)))
-print(paste0('Input VMT_scenario sum: ', formatC(sum(vmt$VMT_scenario), format = "e", digits = 2)))
-print(paste0('Output VMT_scenario dum: ', formatC(sum(out$VMT_scenario), format = "e", digits = 2)))
 
 ## write output
 if (!is.na(output_fname)){
@@ -178,13 +247,13 @@ if (!is.na(output_fname)){
   
   
 } else {
-  write.csv(out, file.path(outputdir,paste0('Sample_Output_ISRM_',rgn,'_',
-                                            str_replace_all(category,' ','_'),'.csv')),
+  output_fname = paste0('Sample_Output_ISRM_',rgn,'_',
+                        str_replace_all(category,pattern=' ',replacement='_'),'.csv')
+  write.csv(out, file.path(outputdir,output_fname),
             row.names = FALSE)
   print('---------------')
   print('Done! Output written to:')
-  print(file.path(outputdir,paste0('Sample_Output_ISRM_',rgn,'_',
-                                   str_replace_all(category,' ','_'),'.csv')))
+  print(file.path(outputdir,output_fname))
   
 }
 
