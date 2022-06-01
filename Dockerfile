@@ -50,6 +50,8 @@ RUN echo  ''  ;\
     R CMD javareconf  ;\
     # debian calls it libnode-dev (ubuntu call it libv8-dev?)
     apt-get -y --quiet install libnode-dev libv8-dev ;\
+    # install prerequites for sf package
+    apt-get -y --quiet install libudunits2-dev libgdal-dev libgeos-dev libproj-dev ;\
     cd /     ;\
     apt-get -y --quiet install apt-file ;\
     ##?? apt-file update ;\
