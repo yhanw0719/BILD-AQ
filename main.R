@@ -25,8 +25,8 @@ if(useparser){
   option_list <- list(
     make_option(c("--input_fname"),  dest="input_fname",  action="store", help="name of VMT input file", default="Sample_Input.csv" ),
     make_option(c("--output_fname"), dest="output_fname", action="store", help="name of output file", default="Sample_Output.csv" ),
-    make_option(c("--emis_inputfname"), dest="emis_inputfname", action="store", help="name of NEI input file", default="nei_isrm_summary_state_new.csv"),
-    make_option(c("--emis_category"), dest="emis_category", action='store', help="emission category in NEI input file", default="Gas LD Veh."),
+    make_option(c("--emis_inputfname"), dest="emis_inputfname", action="store", help="name of NEI input file", default="nei_isrm_summary_state_onroad.csv"),
+    make_option(c("--emis_category"), dest="emis_category", action='store', help="emission category in NEI input file", default="Onroad"),
     make_option(c("--basedir"), dest="basedir", action="store", help="working dir", default="/" ),
     make_option(c("--codedir"), dest="codedir", action="store", help="base dir where R code is located", default="/opt/gitrepo/BILD-AQ/" ),
     make_option(c("--PMfactor"), dest="PMfactor", action="store", help="% PM25 change = PMfactor * % VMT change", default=0)

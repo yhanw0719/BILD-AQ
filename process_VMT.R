@@ -27,12 +27,12 @@ state_map = data.frame(
 state_names = state_map[state_map$code %in% state_codes,'name']
 
 ## load Rdata of those states
-network_isrm_all = NULL
+network_isrm = NULL
 for (state_name in state_names){
-  load(file=file.path(inputdir,paste0('network_isrm_',state_name,'.RData')))
-  network_isrm_all = rbind(network_isrm_all, network_isrm)
+  load(file=file.path(inputdir,'HPMS',paste0('network_isrm_',state_name,'.RData')))
+  network_isrm = rbind(network_isrm, hpms_tract_isrm)
 }
-network_isrm = network_isrm_all[,c('GEOID','isrm','lanemiles')]
+network_isrm = network_isrm[,c('GEOID','isrm','lanemiles')]
 
 ## convert tract VMT to ISRM VMT
 vmt_isrm <- data.frame(network_isrm) %>%
