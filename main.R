@@ -28,7 +28,7 @@ if(useparser){
     make_option(c("--emis_category"), dest="emis_category", action='store', help="emission category in NEI input file", default="Gas LD Veh."),
     make_option(c("--basedir"), dest="basedir", action="store", help="working dir", default="/" ),
     make_option(c("--codedir"), dest="codedir", action="store", help="base dir where R code is located", default="/opt/gitrepo/BILD-AQ/" ),
-    make_option(c("--PM25factor"), dest="PM25factor", action="store", help="% PM25 change = PM25factor * % VMT change", default=0)
+    make_option(c("--PMfactor"), dest="PMfactor", action="store", help="% PM25 change = PMfactor * % VMT change", default=0)
   )
   opt <- parse_args(OptionParser(option_list=option_list))
   
@@ -39,7 +39,7 @@ if(useparser){
   emis_category = opt$emis_category
   basedir = opt$basedir
   codedir = opt$codedir
-  PM25factor = opt$PM25factor
+  PMfactor = opt$PMfactor
 
   # print for users to confirm
   print("input file names:")
@@ -48,7 +48,7 @@ if(useparser){
   print("output file name:")
   print(output_fname)
   print("PM 2.5 factor:")
-  print(PM25factor)
+  print(PMfactor)
 
 }
 
@@ -110,7 +110,7 @@ out = merge(vmt, em, by='isrm', all=FALSE)  %>%
              NOx = NOx / VMT_base * VMT_scenario - NOx,
              NH3 = NH3 / VMT_base * VMT_scenario - NH3,
              SOx = SOx / VMT_base * VMT_scenario - SOx,
-             PM25 = (PM25 / VMT_base * VMT_scenario - PM25)*PM25factor)
+             PM25 = (PM25 / VMT_base * VMT_scenario - PM25)*PMfactor)
 
 
 
