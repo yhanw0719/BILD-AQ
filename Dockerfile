@@ -29,6 +29,7 @@ RUN echo ''  ;\
     cd /     ;\
     mkdir -p /opt/gitrepo/BILD-AQ ;\
     pwd      ;\
+    Rscript --quiet --no-readline --slave -e 'install.packages("optparse",     repos = "http://cran.us.r-project.org")'    ;\
     echo ""
 
 # add some marker of how Docker was build.
