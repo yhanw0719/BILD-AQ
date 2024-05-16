@@ -1,0 +1,12 @@
+Python version recommended: 3.9.7
+
+
+Python packages needed:
+	from re import L
+	import shutil
+	import sys
+	import os
+	import yaml # version 6.0
+	import docker # version 5.0.3
+	import argparse # version 1.1
+	import logging

@@ -1,0 +1,31 @@
+############################
+#     LDVEMIS SETTINGS     #
+############################
+# docker settings
+docker_image: ghcr.io/yhanw0719/bild-aq:mainv1.2.3
+docker_stdout: False
+pull_latest: True # False
+
+# io settings
+host_inputdir: /home/ubuntu/Yuhan/Data/BILD-AQ/input/
+host_outputdir: /home/ubuntu/Yuhan/Data/BILD-AQ/output/
+input_fname: Sample_Input_CA.csv ## you can customize it
+output_fname: Sample_Output_ISRM_CA_Onroad_LDV.csv ## you can customize it
+
+# emis input settings
+emis_inputfname: nei_isrm_summary_onroad_LDV.csv
+emis_category: Onroad_LDV 
+
+# set PM 2.5 change factor (% PM25 change = PM25factor * % VMT change)
+PMfactor: 0.15
+
+# path settings inside docker (DO NOT CHANGE UNLESS NECESSARY)
+basedir: /
+codedir: /opt/gitrepo/BILD-AQ
+indocker_inputdir: /input
+indocker_outputdir: /output
+
+# format command line arguments
+formattable_command: "--input_fname {0} --output_fname {1} --emis_inputfname {2} --emis_category {3} --basedir {4} --codedir {5} --PMfactor {6}"
+
+
