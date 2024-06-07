@@ -72,13 +72,16 @@ def get_ldvemis_docker_vols(settings):
 def get_ldvemis_cmd(settings):
     input_fname = settings['input_fname']
     output_fname = settings['output_fname']
-    emis_inputfname = settings['emis_inputfname']
+    emis_inputfname_btw = settings['emis_inputfname_btw']
+    emis_inputfname_nbtw = settings['emis_inputfname_nbtw']
+    nbtw_adj_factor_fname = settings['nbtw_adj_factor_fname']
+    nbtw_adj_factor_year = settings['nbtw_adj_factor_year']
+    btw_pm25_increment = settings['btw_pm25_increment']
     emis_category = settings['emis_category']
     basedir = settings.get('basedir','/')
     codedir = settings.get('codedir','/')
-    PMfactor = settings.get('PMfactor', 0)
     formattable_command = settings['formattable_command']
-    ldvemis_cmd = formattable_command.format(input_fname, output_fname, emis_inputfname, emis_category, basedir, codedir,PMfactor)
+    ldvemis_cmd = formattable_command.format(input_fname, output_fname, emis_inputfname_btw, emis_inputfname_nbtw, nbtw_adj_factor_fname, nbtw_adj_factor_year, btw_pm25_increment, emis_category, basedir, codedir)
     return ldvemis_cmd
 
 
@@ -101,7 +104,7 @@ def run_model(settings, client):
     # 1. PARSE SETTINGS
     input_fname = settings['input_fname']
     output_fname = settings['output_fname']
-    emis_category = settings['emis_category']
+    nbtw_adj_factor_year = settings['nbtw_adj_factor_year']
     image_name = settings['docker_image']
     ldvemis_docker_vols = get_ldvemis_docker_vols(settings)
     ldvemis_cmd = get_ldvemis_cmd(settings)
@@ -111,8 +114,8 @@ def run_model(settings, client):
     # 2. RUN LDVEMIS via docker container client
     print_str = (
         "Simulating LDVEMIS with input {0} "
-        "output {1}, emission {2}".format(
-            input_fname, output_fname, emis_category))
+        "output {1}, for year {2}".format(
+            input_fname, output_fname, nbtw_adj_factor_year))
     formatted_print(print_str)
     ldvemis = client.containers.run(
         image_name,
