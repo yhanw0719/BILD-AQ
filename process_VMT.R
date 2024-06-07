@@ -26,27 +26,28 @@ state_map = data.frame(
                      'WI','WY','AS','GU','MP','PR','VI'))
 state_names = state_map[state_map$code %in% state_codes,'name']
 
-## load Rdata of those states
-network_isrm = NULL
+## load RData & convert tract VMT to ISRM VMT
+vmt_isrm = NULL
 for (state_name in state_names){
   load(file=file.path(inputdir,'HPMS',paste0('network_isrm_',state_name,'.RData')))
-  network_isrm = rbind(network_isrm, hpms_tract_isrm)
+  tmp = data.frame(hpms_tract_isrm[,c('GEOID','isrm','lanemiles')]) %>%
+        group_by(GEOID) %>%
+        mutate(tract_geoid = as.numeric(GEOID),
+               isrm = isrm,
+               lanemiles_tractsum = sum(lanemiles),
+               lanemiles_tractpec = lanemiles/sum(lanemiles)) %>%
+        merge(vmt, by='tract_geoid') %>%
+        mutate(VMT_base = VMT_base * lanemiles_tractpec,
+               VMT_scenario = VMT_scenario * lanemiles_tractpec)  %>%
+        ungroup %>% group_by(isrm) %>%
+        summarise(VMT_base = sum(VMT_base),
+                  VMT_scenario = sum(VMT_scenario))
+  vmt_isrm = rbind(vmt_isrm, tmp)
 }
-network_isrm = network_isrm[,c('GEOID','isrm','lanemiles')]
-
-## convert tract VMT to ISRM VMT
-vmt_isrm <- data.frame(network_isrm) %>%
-            group_by(GEOID) %>%
-            summarise(tract_geoid = as.numeric(GEOID),
-                      isrm = isrm,
-                      lanemiles_tractsum = sum(lanemiles),
-                      lanemiles_tractpec = lanemiles/sum(lanemiles)) %>%
-            merge(vmt, all=FALSE) %>%
-            mutate(VMT_base = VMT_base * lanemiles_tractpec,
-                   VMT_scenario = VMT_scenario * lanemiles_tractpec)  %>%
-            ungroup %>% group_by(isrm) %>%
-            summarise(VMT_base = sum(VMT_base),
-                      VMT_scenario = sum(VMT_scenario))
+vmt_isrm = vmt_isrm %>%
+           group_by(isrm) %>%
+           summarise(VMT_base = sum(VMT_base),
+                     VMT_scenario = sum(VMT_scenario))
 
 
 ## end of script
