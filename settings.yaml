@@ -2,22 +2,25 @@
 #     LDVEMIS SETTINGS     #
 ############################
 # docker settings
-docker_image: ghcr.io/yhanw0719/bild-aq:mainv1.2.3
+docker_image: ghcr.io/yhanw0719/bild-aq:mainvXXX
 docker_stdout: False
 pull_latest: True # False
 
 # io settings
 host_inputdir: /home/ubuntu/Yuhan/Data/BILD-AQ/input/
 host_outputdir: /home/ubuntu/Yuhan/Data/BILD-AQ/output/
-input_fname: Sample_Input_CA.csv ## you can customize it
-output_fname: Sample_Output_ISRM_CA_Onroad_LDV.csv ## you can customize it
+input_fname: Sample_Input_CA.csv ## customizable
+output_fname: Sample_Output_CA.csv ## customizable
 
 # emis input settings
-emis_inputfname: nei_isrm_summary_onroad_LDV.csv
+emis_inputfname_btw: onroad_NEI2017_LDV_btw.csv
+emis_inputfname_nbtw: onroad_NEI2017_LDV_nbtw.csv
 emis_category: Onroad_LDV 
 
-# set PM 2.5 change factor (% PM25 change = PM25factor * % VMT change)
-PMfactor: 0.15
+# emis adjustment settings
+nbtw_adj_factor_fname: adj_factor_from2017_nbtw.csv ## for non-brake-and-tire-wear emis, adj factor by year and pollutant
+nbtw_adj_factor_year: 2040 ## customizable, MUST match output year
+btw_pm25_increment: 0.1 ## customizable, for brake and tire wear PM2.5 emis adj (0.1 means +10%)
 
 # path settings inside docker (DO NOT CHANGE UNLESS NECESSARY)
 basedir: /
@@ -26,6 +29,5 @@ indocker_inputdir: /input
 indocker_outputdir: /output
 
 # format command line arguments
-formattable_command: "--input_fname {0} --output_fname {1} --emis_inputfname {2} --emis_category {3} --basedir {4} --codedir {5} --PMfactor {6}"
-
+formattable_command: "--input_fname {0} --output_fname {1} --emis_inputfname_btw {2} --emis_inputfname_nbtw {3} --nbtw_adj_factor_fname {4} --nbtw_adj_factor_year {5} --btw_pm25_increment {6} --emis_category {7} --basedir {8} --codedir {9}"
 
