@@ -23,8 +23,8 @@ if(useparser){
 
   # parse command-line options
   option_list <- list(
-    make_option(c("--input_fname"),  dest="input_fname",  action="store", help="name of VMT input file", default="Sample_Input.csv" ),
-    make_option(c("--output_fname"), dest="output_fname", action="store", help="name of output file", default="Sample_Output.csv" ),
+    make_option(c("--input_fname"),  dest="input_fname",  action="store", help="name of VMT input file", default="Sample_Input_CA.csv" ),
+    make_option(c("--output_fname"), dest="output_fname", action="store", help="name of output file", default="Sample_Output_CA.csv" ),
     make_option(c("--emis_inputfname_btw"), dest="emis_inputfname_btw", action="store", help="name of NEI brake and tire wear emission file", default="onroad_NEI2017_LDV_btw.csv"),
     make_option(c("--emis_inputfname_nbtw"), dest="emis_inputfname_nbtw", action="store", help="name of NEI non-brake-and-tire-wear emission file", default="onroad_NEI2017_LDV_nbtw.csv"),
     make_option(c("--nbtw_adj_factor_fname"), dest="nbtw_adj_factor_fname", action="store", help="name of adjustment factor file for non-brake-and-tire-wear emission", default="adj_factor_from2017_nbtw.csv"),
