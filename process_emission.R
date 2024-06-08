@@ -15,7 +15,7 @@ if (dim(em_nbtw)[1]==0){
 ## end of script
 print('---------------')
 print('ISRM-level NEI emission inputs:')
-print(em_input_btw)
-print(em_input_nbtw)
+print(em_btw)
+print(em_nbtw)
 
 
