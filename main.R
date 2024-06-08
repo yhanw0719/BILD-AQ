@@ -11,8 +11,8 @@ library(stringr)
 # parse cmd arguments and setup
 ##############################################
 ## set input and output paths
-inputdir = './input'
-outputdir = './output'
+inputdir = '/input'
+outputdir = '/output'
 
 ## parse cmd arguements
 useparser = T 
