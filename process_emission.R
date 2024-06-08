@@ -14,7 +14,7 @@ if (dim(em)[1]==0){
 
 ## end of script
 print('---------------')
-print('ISRM-level NEI emission input and category:')
-print(emis_inputfname)
-print(emis_category)
+print('ISRM-level NEI emission inputs ready')
+#print(emis_inputfname)
+#print(emis_category)
 
